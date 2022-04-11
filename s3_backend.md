@@ -15,16 +15,16 @@ Why is "state locking" necesary?
 
  This is just one method of storing state, just copy this into your "main.tf" file and run:
 
-# After running this code with a "terraform apply, uncomment the code below and run it again, you will then initialize the backend for the code in a remote S3 Bucket"
+#After running this code with a "terraform apply, uncomment the code below and run it again, you will then initialize the backend for the code in a remote S3 Bucket"
 
  terraform {
- # backend "s3" {
- #  bucket         = "backend-dev-tfstate-bucket" # REPLACE WITH YOUR BUCKET NAME
- #  key            = "gov_cloud/dev/terraform.tfstate"
- #  region         = "us-west-1"
- #  dynamodb_table = "terraform-state-lock"
- #  encrypt        = true
- # }
+ #backend "s3" {
+ #bucket         = "backend-dev-tfstate-bucket" # REPLACE WITH YOUR BUCKET NAME
+ #key            = "gov_cloud/dev/terraform.tfstate"
+ #region         = "us-west-1"
+ #dynamodb_table = "terraform-state-lock"
+ #encrypt        = true
+ #}
 
   required_providers {
     aws = {
