@@ -6,5 +6,6 @@ This is a work in progress repo, the features that still need to be added:
 - A readme for the modules 
 - Importing modules to the root module 
 - Variables for root 
+- Miscellaneous revisions for mistakes
 
 I created a user data script to ensure TLS 1.2 was enabled on the bastion host, opened port 3389, and tried to make it as modular as possible. 
