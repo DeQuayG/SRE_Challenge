@@ -1,16 +1,16 @@
-module "aws_placement_group" "ec2_placement_asg_group" {
+resource "aws_placement_group" "ec2_placement_asg_group" {
   name     = "ec2_placement_asg_group"
   strategy = "${var.placement_strategy}"
-  availability_zones = ["us-gov-west-1a", "us-gov-west-1b"]
+  availability_zones = count.var.az[0]
 }
 
-module "aws_launch_template" "asg_ec2_launch" {
+resource "aws_launch_template" "asg_ec2_launch" {
   name_prefix   = var.name_prefix
   image_id      = var.ami
   instance_type = var.instance_type
 }
 
-module "aws_autoscaling_group" "ec2_asg" {
+resource "aws_autoscaling_group" "ec2_asg" {
   name                      = "foobar3-terraform-test"
   max_size                  = var.max_size
   min_size                  = var.min_size

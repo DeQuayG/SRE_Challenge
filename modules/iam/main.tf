@@ -1,4 +1,4 @@
-module "aws_cloudwatch_log_group" "cw_log_group" {
+resource "aws_cloudwatch_log_group" "cw_log_group" {
   name = "${var.environment_name}_logs"
 
   tags = {
@@ -7,14 +7,14 @@ module "aws_cloudwatch_log_group" "cw_log_group" {
   }
 }
 
-module "aws_flow_log" "vpc_flow_log" {
+resource "aws_flow_log" "vpc_flow_log" {
   iam_role_arn    = aws_iam_role.log_watcher.arn
   log_destination = aws_cloudwatch_log_group.cw_log_group.arn
   traffic_type    = "ALL"
   vpc_id          = aws_vpc.app_vpc.id
 }
 
-module "aws_iam_role" "log_watcher" {
+resource "aws_iam_role" "log_watcher" {
   name = var.log_role_name
 
   assume_role_policy = <<EOF
@@ -34,7 +34,7 @@ module "aws_iam_role" "log_watcher" {
 EOF
 }
 
-module "aws_iam_role_policy" "log_watcher_policy" {
+resource "aws_iam_role_policy" "log_watcher_policy" {
   name = var.log_watcher_policy_name
   role = aws_iam_role.log_watcher.id
 
@@ -61,7 +61,7 @@ module "aws_iam_role_policy" "log_watcher_policy" {
 EOF
 } 
 
-module "aws_iam_role" "canary_role" {
+resource "aws_iam_role" "canary_role" {
   name = var.canary_role_name
 
   assume_role_policy = <<EOF
@@ -82,7 +82,7 @@ EOF
 }
 
 
-module "aws_iam_role_policy" "canary_role_policy" {
+resource "aws_iam_role_policy" "canary_role_policy" {
   name = var.canary_role_policy_name
   role = aws_iam_role.canary_role.id
 
@@ -114,7 +114,7 @@ EOF
 }
 
 
-module "aws_synthetics_canary" "some" {
+resource "aws_synthetics_canary" "some" {
   name                 = "some-canary"
   artifact_s3_location = "s3://some-bucket/"
   execution_role_arn   = "some-role"

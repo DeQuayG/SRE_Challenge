@@ -1,4 +1,4 @@
-module "aws_db_instance" "db_instance" {
+resource "aws_db_instance" "db_instance" {
   allocated_storage   = var.storage
   storage_type        = var.storage_type
   engine              = var.db_engine
@@ -19,7 +19,7 @@ module "aws_db_instance" "db_instance" {
 } 
 
 ## This will be used to identify which subnets the databse should be associated with
-module "aws_db_subnet_group" "rds_subnet_group" {
+resource "aws_db_subnet_group" "rds_subnet_group" {
   name       = "${var.app_name}-${var.environment_name}-database_subnet"
   subnet_ids = [aws_subnet.data_subnet_1.id, aws_subnet.data_subnet_2.id]
 
@@ -28,7 +28,7 @@ module "aws_db_subnet_group" "rds_subnet_group" {
   }
 }
 
-module "random_password" "password" {
+resource "random_password" "password" {
   length           = 16
   special          = true
   override_special = "_%@"
@@ -36,14 +36,14 @@ module "random_password" "password" {
  
 # Creating a AWS secret for database master account (Masteraccoundb)
  
-module "aws_secretsmanager_secret" "rds1_secret" {
+resource "aws_secretsmanager_secret" "rds1_secret" {
    name = "rds1_db_secret"
    sensitive = true
 }
  
 # Creating a AWS secret versions for database master account (Masteraccoundb)
  
-module "aws_secretsmanager_secret_version" "dbs_version" {
+resource "aws_secretsmanager_secret_version" "dbs_version" {
   secret_id = aws_secretsmanager_secret.rds1_secret.id
   secret_string = <<EOF
    {

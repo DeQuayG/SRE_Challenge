@@ -1,4 +1,23 @@
-module "vpc" {
-  vpc_id = module.aws_vpc.app_vpc.id
-  source = "github.com:DeQuayG/SRE_Challenge"
-}
+module "alb" {
+  source = "./modules/alb"
+} 
+
+module "asg" {
+  source = "./modules/asg"
+} 
+
+module "compute" {
+  source = "./modules/compute"
+} 
+
+module "database" {
+  source = "./modules/database"
+} 
+
+module "iam" {
+  source = "./modules/iam"
+} 
+
+module "network" {
+  source = "./modules/network"
+} 

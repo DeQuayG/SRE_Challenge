@@ -13,7 +13,7 @@ Why is "state locking" necesary?
  https://www.terraform.io/cdktf/concepts/remote-backends
 
 
- This is just one method of storing state, just copy this into your "main.tf" file and run:
+ This is just one method of storing state, just copy this into your "providers.tf" file and run:
 
 #After running this code with a "terraform apply, uncomment the code below and run it again, you will then initialize the backend for the code in a remote S3 Bucket"
 

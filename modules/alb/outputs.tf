@@ -4,7 +4,7 @@ output "lb_dns_name" {
 } 
 
 output "alb_arn" {
-  
+  value = aws_alb.app_servers_alb.id
 } 
 
 output "alb_listener" {

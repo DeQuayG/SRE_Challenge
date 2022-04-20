@@ -34,4 +34,4 @@ output "subnet_ids" {
 
 output "certificate" {
   value = aws_acm_certificate.aws_app_cert.id
-}
+} 

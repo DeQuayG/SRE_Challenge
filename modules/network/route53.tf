@@ -1,7 +1,7 @@
 # File for route 53 network confirguration 
 # To prevent the main files from becoming too bloated
 
-module "aws_acm_certificate" "aws_app_cert" {
+resource "aws_acm_certificate" "aws_app_cert" {
   domain_name       = "${var.hosted_domain}"
   validation_method = "DNS"
 
@@ -14,11 +14,11 @@ module "aws_acm_certificate" "aws_app_cert" {
   }
 }
 
-module "aws_route53_zone" "hosted_zone" {
+resource "aws_route53_zone" "hosted_zone" {
   name = var.hosted_domain
 }
 
-module "aws_route53_record" "myRecord" {
+resource "aws_route53_record" "myRecord" {
   zone_id = aws_route53_zone.hosted_zone.id
   name    = var.hosted_domain
   type    = "A" 

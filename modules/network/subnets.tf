@@ -1,4 +1,4 @@
-module "aws_vpc" "app_vpc" {
+resource "aws_vpc" "app_vpc" {
   cidr_block = var.cidr_block["vpc"] 
   enable_dns_hostnames             = true
   enable_dns_support               = true 
@@ -9,7 +9,7 @@ module "aws_vpc" "app_vpc" {
 }
 
 ### Public Subnets #####
-module "aws_subnet" "public_subnet_1" {
+resource "aws_subnet" "public_subnet_1" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_1"]
   availability_zone = "us-gov-west-1a" ##make a variable
@@ -19,7 +19,7 @@ module "aws_subnet" "public_subnet_1" {
   }
 }
 
-module "aws_subnet" "public_subnet_2" {
+resource "aws_subnet" "public_subnet_2" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_2"]
   availability_zone = "us-gov-west-1b"
@@ -30,7 +30,7 @@ module "aws_subnet" "public_subnet_2" {
 }
 
 ### Web Application Subnets #####
-module "aws_subnet" "wp_subnet_1" {
+resource "aws_subnet" "wp_subnet_1" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_1"]
   availability_zone = "us-gov-west-1a" 
@@ -41,7 +41,7 @@ module "aws_subnet" "wp_subnet_1" {
   }
 } 
 
-module "aws_subnet" "wp_subnet_2" {
+resource "aws_subnet" "wp_subnet_2" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_2"]
   availability_zone = "us-gov-west-1b" 
@@ -54,7 +54,7 @@ module "aws_subnet" "wp_subnet_2" {
 
 
 ### Database Subnets #####
-module "aws_subnet" "data_subnet_1" {
+resource "aws_subnet" "data_subnet_1" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_1"]
   availability_zone = "us-gov-west-1a" 
@@ -65,7 +65,7 @@ module "aws_subnet" "data_subnet_1" {
   }
 }
 
-module "aws_subnet" "data_subnet_2" {
+resource "aws_subnet" "data_subnet_2" {
   vpc_id            = data.aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_2"]
   availability_zone = "us-gov-west-1b" 
@@ -77,7 +77,7 @@ module "aws_subnet" "data_subnet_2" {
 }
 
 ##########Just a segmentation Marker, make it easier to read###########
-module "aws_internet_gateway" "igw" {
+resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app_vpc.id
   description = "This is essentially the 'gateway of last resort', it is your router"
 
@@ -89,14 +89,14 @@ module "aws_internet_gateway" "igw" {
   }
 }
 
-module "aws_route_table" "public" {
+resource "aws_route_table" "public" {
   vpc_id = aws_vpc.app_vpc.id
   tags = {
     "Name" = "public route table"
   }
 }
 
-module "aws_route_table" "private" {
+resource "aws_route_table" "private" {
   vpc_id = aws_vpc.app_vpc.id
   tags = {
     "Name" = "private route table"
@@ -106,43 +106,43 @@ module "aws_route_table" "private" {
 ## The 0.0.0.0/0 iniodcates that the route table will be associated with every
 # IP that isn't the subnets' own IP's, and direct that traffic to the IGW, 
 # Terraform will handle the rest
-module "aws_route" "public_igw" {
+resource "aws_route" "public_igw" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
 
-module "aws_route_table_association" "public_subnet_1" {
+resource "aws_route_table_association" "public_subnet_1" {
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.public.id
 }
 
-module "aws_route_table_association" "public_subnet_2" {
+resource "aws_route_table_association" "public_subnet_2" {
   subnet_id      = aws_subnet.public_subnet_2.id
   route_table_id = aws_route_table.public.id
 }
 
-module "aws_route_table_association" "wp_subnet_1" {
+resource "aws_route_table_association" "wp_subnet_1" {
   subnet_id      = aws_subnet.wp_subnet_1.id
   route_table_id = aws_route_table.private.id
 }
 
-module "aws_route_table_association" "wp_subnet_2" {
+resource "aws_route_table_association" "wp_subnet_2" {
   subnet_id      = aws_subnet.wp_subnet_2.id
   route_table_id = aws_route_table.private.id
 }
 
-module "aws_route_table_association" "data_subnet_1" {
+resource "aws_route_table_association" "data_subnet_1" {
   subnet_id      = aws_subnet.data_subnet_1.id
   route_table_id = aws_route_table.private.id
 }
 
-module "aws_route_table_association" "data_subnet_2" {
+resource "aws_route_table_association" "data_subnet_2" {
   subnet_id      = aws_subnet.data_subnet_2.id
   route_table_id = aws_route_table.private.id
 }
 
-module "aws_eip" "bastion_static" {
+resource "aws_eip" "bastion_static" {
   instance = aws_instance.bastion1.id
   vpc = true
 }

@@ -5,7 +5,7 @@ variable "app_name" {
 
 variable "az" {
     type = string(list)
-    default = ["us-gov-west-1a", "us-gov-west-1b"]
+    default = ["us-east-1a", "us-east-1b"]
 } 
 
 variable "cidr_block" { 
