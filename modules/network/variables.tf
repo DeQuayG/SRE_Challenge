@@ -4,7 +4,7 @@ variable "app_name" {
 } 
 
 variable "az" {
-    type = string(list)
+    type = list
     default = ["us-east-1a", "us-east-1b"]
 } 
 
@@ -22,7 +22,7 @@ variable "cidr_block" {
 }
 
 variable "allowed_cidr_blocks" {
-    type = string(list)
+    type = list
     description = "External CIDR blocks that allowed to communicate with the ALB"
     default = [""]
 } 
@@ -37,42 +37,14 @@ variable "hosted_domain" {
   default = "www.example.com"
 } 
 
-variable "" {
-  
+variable "alb_id" {
+  type = string
+} 
+
+variable "lb_dns_name" {
+  type = string
 }
 
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-}
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
+variable "bastion1_instance" {
+  type = string
 }

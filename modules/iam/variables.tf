@@ -35,3 +35,7 @@ variable "canary_role_policy_name" {
 variable "canary_role_name" {
   default = "canary"
 }
+
+variable "vpc" {
+  type = list
+}

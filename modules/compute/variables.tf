@@ -10,3 +10,10 @@ variable "environment_name" {
   default = "dev"
 } 
 
+variable "subnet_ids" {
+  type = map
+} 
+
+variable "vpc_security_group_ids" {
+  type = map
+}

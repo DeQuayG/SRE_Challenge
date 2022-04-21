@@ -1,17 +1,17 @@
 resource "aws_db_instance" "db_instance" {
-  allocated_storage   = var.storage
-  storage_type        = var.storage_type
-  engine              = var.db_engine
-  engine_version      = var.db_engine_version
-  instance_class      = var.db_instance_class
-  multi_az            = false
-  name                = var.rds_name
-  username            = var.db_user
-  password            = var.db_pass
-  skip_final_snapshot = false
-  storage_encrypted   = true
-  vpc_security_group_ids = aws_security_group.rds_security_group.id
-  sensitive = true
+  allocated_storage      = var.storage
+  max_allocated_storage  = var.max_storage
+  storage_type           = var.storage_type
+  engine                 = var.db_engine
+  engine_version         = var.db_engine_version
+  instance_class         = var.db_instance_class
+  multi_az               = false
+  name                   = var.rds_name
+  username               = var.db_user
+  password               = var.db_pass
+  skip_final_snapshot    = false
+  storage_encrypted      = true
+  vpc_security_group_ids = var.aws_security_group.rds_security_group.id
 
   tags = { 
     "Name" = "RDS"
@@ -38,7 +38,6 @@ resource "random_password" "password" {
  
 resource "aws_secretsmanager_secret" "rds1_secret" {
    name = "rds1_db_secret"
-   sensitive = true
 }
  
 # Creating a AWS secret versions for database master account (Masteraccoundb)

@@ -1,6 +1,6 @@
 variable "storage" {
   type = number
-  value = 20
+  default = 10
 } 
 
 variable "storage_type" {
@@ -23,26 +23,7 @@ variable "rds_name" {
   default = "RDS1"
 } 
 
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-}
-
-variable "" {
-  
-} 
-
-variable "" {
-  
-} 
-
-variable "" {
-  
+variable "max_storage" {
+  default = 30
+  description = "By specifying a 'max storage' variable we can enable autoscaling"
 }

@@ -4,14 +4,14 @@ resource "aws_alb" "app_servers_alb" {
   load_balancer_type = "application"
 
   subnets = [
-    aws_subnet.public_subnet_1.id,
-    aws_subnet.public_subnet_2.id,
+    var.subnet_ids.aws_subnet.public_subnet_1.id,
+    var.subnet_ids.aws_subnet.public_subnet_2.id,
   ]
 
   security_groups = [
-    aws_security_group.wpserver_sg1.id,
-    aws_security_group.wpserver_sg2.id,
-    aws_security_group.alb_security_group.id
+    var.vpc_security_group_ids.aws_security_group.wpserver_sg1.id,
+    var.vpc_security_group_ids.aws_security_group.wpserver_sg2.id,
+    var.vpc_security_group_ids.aws_security_group.alb_security_group.id
   ]
 
   depends_on = [aws_internet_gateway.igw]
@@ -22,7 +22,7 @@ resource "aws_lb_target_group" "app_servers_target_group" {
   port        =  443
   protocol    = "HTTPS"
   target_type = "instance"
-  vpc_id      = aws_vpc.app_vpc.id
+  vpc_id      = var.vpc
 
   health_check {
     enabled = true

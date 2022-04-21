@@ -1,7 +1,6 @@
 resource "aws_placement_group" "ec2_placement_asg_group" {
   name     = "ec2_placement_asg_group"
   strategy = "${var.placement_strategy}"
-  availability_zones = count.var.az[0]
 }
 
 resource "aws_launch_template" "asg_ec2_launch" {
@@ -20,6 +19,6 @@ resource "aws_autoscaling_group" "ec2_asg" {
   force_delete              = true
   placement_group           = aws_placement_group.ec2_placement_asg_group.id
   launch_configuration      = aws_launch_template.asg_ec2_launch.name
-  vpc_zone_identifier       = aws_vpc.app_vpc.id 
-  target_group_arns         = aws_lb_target_group.app_servers_target_group.arn
+  vpc_zone_identifier       = data.aws_vpc.app_vpc.id 
+  target_group_arns         = data.aws_lb_target_group.app_servers_target_group.arn
 }

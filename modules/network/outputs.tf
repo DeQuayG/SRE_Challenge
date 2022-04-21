@@ -4,10 +4,7 @@ output "bastion_eip" {
 } 
 
 output "vpc" {
-    value = {
-        vpc_id = aws_vpc.app_vpc.id
-        vpc_cidr = aws_vpc.app_vpc.address
-        }
+    value = aws_vpc.app_vpc.id
     description = "the id of the app vpc to be exported to root"
 }   
 

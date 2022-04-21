@@ -24,7 +24,7 @@ resource "aws_route53_record" "myRecord" {
   type    = "A" 
 
   alias {
-      name                   = aws_lb.app_servers_alb.dns_name
+      name                   = var.lb_dns_name
       zone_id                = aws_route53_zone.hosted_zone.id
       evaluate_target_health = true
   }

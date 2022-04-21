@@ -1,6 +1,6 @@
 output "lb_dns_name" {
   description = "The DNS name of the load balancer"
-  value       = aws_lb.external-elb.dns_name
+  value       = aws_alb.app_servers_alb.dns_name
 } 
 
 output "alb_arn" {

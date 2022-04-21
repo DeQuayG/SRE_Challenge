@@ -10,7 +10,7 @@ resource "aws_vpc" "app_vpc" {
 
 ### Public Subnets #####
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_1"]
   availability_zone = "us-gov-west-1a" ##make a variable
 
@@ -20,7 +20,7 @@ resource "aws_subnet" "public_subnet_1" {
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_2"]
   availability_zone = "us-gov-west-1b"
 
@@ -31,7 +31,7 @@ resource "aws_subnet" "public_subnet_2" {
 
 ### Web Application Subnets #####
 resource "aws_subnet" "wp_subnet_1" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_1"]
   availability_zone = "us-gov-west-1a" 
   map_public_ip_on_launch         = false
@@ -42,7 +42,7 @@ resource "aws_subnet" "wp_subnet_1" {
 } 
 
 resource "aws_subnet" "wp_subnet_2" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_2"]
   availability_zone = "us-gov-west-1b" 
   map_public_ip_on_launch         = false
@@ -55,7 +55,7 @@ resource "aws_subnet" "wp_subnet_2" {
 
 ### Database Subnets #####
 resource "aws_subnet" "data_subnet_1" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_1"]
   availability_zone = "us-gov-west-1a" 
   map_public_ip_on_launch         = false
@@ -66,7 +66,7 @@ resource "aws_subnet" "data_subnet_1" {
 }
 
 resource "aws_subnet" "data_subnet_2" {
-  vpc_id            = data.aws_vpc.app_vpc.id
+  vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_2"]
   availability_zone = "us-gov-west-1b" 
   map_public_ip_on_launch         = false
@@ -79,11 +79,6 @@ resource "aws_subnet" "data_subnet_2" {
 ##########Just a segmentation Marker, make it easier to read###########
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app_vpc.id
-  description = "This is essentially the 'gateway of last resort', it is your router"
-
-  lifecycle = {
-    create_before_destroy = true
-  }
   tags = {
     "Name" = "igw"
   }

@@ -11,7 +11,7 @@ resource "aws_flow_log" "vpc_flow_log" {
   iam_role_arn    = aws_iam_role.log_watcher.arn
   log_destination = aws_cloudwatch_log_group.cw_log_group.arn
   traffic_type    = "ALL"
-  vpc_id          = aws_vpc.app_vpc.id
+  vpc_id          = var.vpc
 }
 
 resource "aws_iam_role" "log_watcher" {
@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "log_watcher_policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "logs:GetLogEvents", 
-        "logs:FilterLogEvents"
+        "logs:FilterLogEvents",
         "logs:DescribeLogGroups",
         "logs:DescribeLogStreams", 
         "cloudwatch:PutMetricData"
@@ -62,7 +62,7 @@ EOF
 } 
 
 resource "aws_iam_role" "canary_role" {
-  name = var.canary_role_name
+  name = "canary_role"
 
   assume_role_policy = <<EOF
 {
@@ -83,7 +83,7 @@ EOF
 
 
 resource "aws_iam_role_policy" "canary_role_policy" {
-  name = var.canary_role_policy_name
+  name = "canary_role_policy"
   role = aws_iam_role.canary_role.id
 
   policy = <<EOF
@@ -96,7 +96,7 @@ resource "aws_iam_role_policy" "canary_role_policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "logs:GetLogEvents", 
-        "logs:FilterLogEvents"
+        "logs:FilterLogEvents",
         "logs:DescribeLogGroups",
         "logs:DescribeLogStreams", 
         "cloudwatch:PutMetricData"
@@ -114,12 +114,11 @@ EOF
 }
 
 
-resource "aws_synthetics_canary" "some" {
-  name                 = "some-canary"
-  artifact_s3_location = "s3://some-bucket/"
-  execution_role_arn   = "some-role"
+resource "aws_synthetics_canary" "the_actual_canary" {
+  name                 = "the_actual_canary"
+  execution_role_arn   =  aws_iam_role.canary_role.arn
   handler              =  var.canary_handler
-  zip_file             = "test-fixtures/lambdatest.zip"
+  zip_file             = "test_canary/coalmine.zip"
   runtime_version      =  var.canary_runtime
 
   schedule {
