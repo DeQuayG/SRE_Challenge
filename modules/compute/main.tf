@@ -3,7 +3,7 @@ resource "aws_instance" "bastion1_instance" {
   instance_type          = "t3a.medium"
   key_name               = aws_key_pair.bastion1-keypair
   subnet_id              = var.aws_subnet.data_subnet_1.id
-  vpc_security_group_ids = var.vpc_security_group_ids["b_sg"]
+  vpc_security_group_ids = var.vpc_security_group_ids
   tags                   = var.environment_name
   user_data = <<EOT
 <powershell>  

@@ -1,13 +1,12 @@
 variable "bastion_ami" {
-  default = "ami-0f9a92942448ac56f"
+  description = "The 'Amazon Machine Image' for the Bastion Host"
 } 
 
 variable "bastion_instance_type" {
-  default = "t3a.medium"
+  description = "The tier of the hardware, t3a.medium, t2a.small, etc"
 } 
 
 variable "environment_name" {
-  default = "dev"
 } 
 
 variable "subnet_ids" {

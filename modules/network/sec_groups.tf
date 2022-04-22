@@ -52,7 +52,7 @@ resource "aws_security_group_rule" "bastion_ingress_1" {
   from_port         = 3389
   to_port           = 3389
   protocol          = "RDP"
-  cidr_blocks       = var.cidr_block
+  cidr_blocks       = var.cidr_block[*].id
   security_group_id = aws_security_group.bastion1_instance_sg.id
 }
 
@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "bastion_ingress_2" {
   from_port         = 22
   to_port           = 22
   protocol          = "SSH"
-  cidr_blocks       = var.cidr_block
+  cidr_blocks       = var.cidr_block[*].id
   security_group_id = aws_security_group.bastion1_instance_sg.id
 } 
 
@@ -70,7 +70,7 @@ resource "aws_security_group_rule" "bastion_egress_1" {
   from_port         = 22
   to_port           = 22
   protocol          = "SSH"
-  cidr_blocks       = var.cidr_block
+  cidr_blocks       = var.cidr_block[*].id
   security_groups   = [wpserver_sg2, alb_security_group, rds_security_group]
   security_group_id = aws_security_group.bastion1_instance_sg.id
 } 
@@ -80,7 +80,8 @@ resource "aws_security_group_rule" "bastion_egress_2" {
   from_port         = 443
   to_port           = 443
   protocol          = "SSH"
-  cidr_blocks       = var.cidr_block
+  for_each          = var.cidr_block
+  cidr_blocks       = each.value.cidr_block
   security_groups   = [wpserver_sg2, alb_security_group, rds_security_group]
   security_group_id = aws_security_group.bastion1_instance_sg.id
 } 
@@ -112,4 +113,9 @@ resource "aws_security_group" "alb_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   } 
-}
+} 
+
+###### 
+# Potetntial solutions for the cidr block map issue 
+# 1) each.value.cidr_block 
+# 2) var.cidr_block[*].id

@@ -95,14 +95,14 @@ resource "aws_iam_role_policy" "canary_role_policy" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "logs:GetLogEvents", 
+        "logs:GetLogEvents",
         "logs:FilterLogEvents",
         "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams", 
-        "cloudwatch:PutMetricData"
+        "logs:DescribeLogStreams",
+        "cloudwatch:PutMetricData",
         "Condition": {
                 "StringEquals": {
-                    "cloudwatch:namespace": "CloudWatchSynthetics"
+                "cloudwatch:namespace":"CloudWatchSynthetics"
                 }
       ],
       "Effect": "Allow",

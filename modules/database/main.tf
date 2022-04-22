@@ -4,14 +4,14 @@ resource "aws_db_instance" "db_instance" {
   storage_type           = var.storage_type
   engine                 = var.db_engine
   engine_version         = var.db_engine_version
-  instance_class         = var.db_instance_class
+  instance_class         = var.aws_db_instance_class
   multi_az               = false
   name                   = var.rds_name
   username               = var.db_user
   password               = var.db_pass
   skip_final_snapshot    = false
   storage_encrypted      = true
-  vpc_security_group_ids = var.aws_security_group.rds_security_group.id
+  vpc_security_group_ids = var.rds_security_group.id
 
   tags = { 
     "Name" = "RDS"
@@ -50,7 +50,6 @@ resource "aws_secretsmanager_secret_version" "dbs_version" {
     "password": "${random_password.password.result}"
    }
 EOF
-sensitive = true
 }
  
 # Importing the AWS secrets created previously using arn.
@@ -63,7 +62,6 @@ data "aws_secretsmanager_secret" "rds1_secret" {
  
 data "aws_secretsmanager_secret_version" "creds" {
   secret_id = data.aws_secretsmanager_secret.rds1_secret.arn
-  sensitive = true
 }
  
 # After importing the secrets storing into Locals

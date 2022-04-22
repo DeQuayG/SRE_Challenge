@@ -12,7 +12,7 @@ resource "aws_vpc" "app_vpc" {
 resource "aws_subnet" "public_subnet_1" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_1"]
-  availability_zone = "us-gov-west-1a" ##make a variable
+  availability_zone = var.az[0] 
 
   tags = {
     "Name" = "public subnet 1"
@@ -22,7 +22,7 @@ resource "aws_subnet" "public_subnet_1" {
 resource "aws_subnet" "public_subnet_2" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["public_subnet_2"]
-  availability_zone = "us-gov-west-1b"
+  availability_zone = var.az[1]
 
   tags = {
     "Name" = "public subnet 2"
@@ -33,7 +33,7 @@ resource "aws_subnet" "public_subnet_2" {
 resource "aws_subnet" "wp_subnet_1" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_1"]
-  availability_zone = "us-gov-west-1a" 
+  availability_zone = var.az[0] 
   map_public_ip_on_launch         = false
 
   tags = {
@@ -44,7 +44,7 @@ resource "aws_subnet" "wp_subnet_1" {
 resource "aws_subnet" "wp_subnet_2" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["private_subnet_2"]
-  availability_zone = "us-gov-west-1b" 
+  availability_zone = var.az[1] 
   map_public_ip_on_launch         = false
 
   tags = {
@@ -57,7 +57,7 @@ resource "aws_subnet" "wp_subnet_2" {
 resource "aws_subnet" "data_subnet_1" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_1"]
-  availability_zone = "us-gov-west-1a" 
+  availability_zone = var.az[0] 
   map_public_ip_on_launch         = false
 
   tags = {
@@ -68,7 +68,7 @@ resource "aws_subnet" "data_subnet_1" {
 resource "aws_subnet" "data_subnet_2" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.cidr_block["data_subnet_2"]
-  availability_zone = "us-gov-west-1b" 
+  availability_zone = var.az[1] 
   map_public_ip_on_launch         = false
 
   tags = {
@@ -138,7 +138,7 @@ resource "aws_route_table_association" "data_subnet_2" {
 }
 
 resource "aws_eip" "bastion_static" {
-  instance = aws_instance.bastion1.id
+  instance = var.aws_instance.bastion1.id
   vpc = true
 }
 
