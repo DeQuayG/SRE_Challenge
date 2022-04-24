@@ -16,3 +16,4 @@ This repo (when completed) will Deploy a 3-Tier Architecture to AWS including:
 - An Application Load Balancer 
 - A Cloud Watch Synthetics (Canary) Test 
 - Multiple Subnets in Multiple AZ's
+- A PostgreSQL Database
